@@ -22,5 +22,5 @@
     <color name="text_500">#202020</color>
 
     <color name="red">#FF0000</color>
-
+    <color name="background">#F5F5F9</color>
 </resources>
