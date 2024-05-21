@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">PokemonApp</string>
+
+    <string name="tv_hello">Hello! 👋</string>
+    <string name="tv_username">nandaiqbalh</string>
+    <string name="tv_pokemon_detail">Pokemon Detail</string>
+    <string name="tv_pokemon_name">Pokemon Name</string>
+    <string name="tv_moves">Moves</string>
+    <string name="tv_types">Types</string>
+    <string name="tv_my_pokemon_list">My Pokemon List</string>
+    <string name="tv_alt_login">Does not have any account?</string>
+    <string name="tv_alt_register">Already have account?</string>
+
+    <!-- Button -->
+    <string name="btn_catch">Catch Pokemon</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Register</string>
+
+    <!-- Form -->
+    <string name="tv_username_title">Username</string>
+    <string name="tv_username_hint">Enter Username</string>
+    <string name="tv_password_title">Password</string>
+    <string name="tv_password_hint">Enter Password</string>
+    <string name="tv_password_confirmation_title">Password Confirmation</string>
+    <string name="tv_password_confirmation_hint">Enter Password Confirmation</string>
+
 </resources>
