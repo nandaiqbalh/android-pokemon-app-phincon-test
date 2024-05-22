@@ -4,10 +4,14 @@ import com.nandaiqbalh.pokemonapp.data.remote.repository.auth.login.AuthLoginRem
 import com.nandaiqbalh.pokemonapp.data.remote.repository.auth.login.AuthLoginRemoteRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.auth.register.AuthRegisterRemoteRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.auth.register.AuthRegisterRemoteRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.catchpokemon.CatchPokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.catchpokemon.CatchPokemonRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.storepokemon.StorePokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.storepokemon.StorePokemonRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,5 +29,9 @@ abstract class RepositoryModule {
 	abstract fun bindsAuthLoginRepository(authLoginRemoteRepositoryImpl: AuthLoginRemoteRepositoryImpl): AuthLoginRemoteRepository
 	@Binds
 	abstract fun bindsAuthRegisterRepository(authRegisterRemoteRepositoryImpl: AuthRegisterRemoteRepositoryImpl): AuthRegisterRemoteRepository
+	@Binds
+	abstract fun bindsCatchPokemonRepository(catchPokemonRepositoryImpl: CatchPokemonRepositoryImpl): CatchPokemonRepository
+	@Binds
+	abstract fun bindsStorePokemonRepository(storePokemonRepositoryImpl: StorePokemonRepositoryImpl): StorePokemonRepository
 
 }

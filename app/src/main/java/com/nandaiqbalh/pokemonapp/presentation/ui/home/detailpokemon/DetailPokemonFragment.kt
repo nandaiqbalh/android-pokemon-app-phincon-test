@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.nandaiqbalh.pokemonapp.R
+import com.nandaiqbalh.pokemonapp.data.remote.model.auth.login.request.AuthLoginRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.catchpokemon.request.CatchPokemonRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemondetail.response.Move
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemondetail.response.Type
+import com.nandaiqbalh.pokemonapp.databinding.DialogNicknameBinding
 import com.nandaiqbalh.pokemonapp.databinding.FragmentDetailPokemonBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
+import com.nandaiqbalh.pokemonapp.presentation.ui.home.MainActivity
+import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.util.GlideApp
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +40,8 @@ class DetailPokemonFragment : Fragment() {
 	private val detailPokemonViewModel: DetailPokemonViewModel by viewModels()
 
 	private var isAlertDialogShowing = false
-
+	private val customSnackbar = CustomSnackbar()
+	private lateinit var storePokemonRequestBody: StorePokemonRequestBody
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?,
@@ -158,6 +166,40 @@ class DetailPokemonFragment : Fragment() {
 								"Moves: $movesText"
 
 							setViewVisibility(cvErrorDetailPokemon, false)
+
+							// catch pokemon
+							binding.btnCatch.setOnClickListener {
+								detailPokemonViewModel.getUserId()
+									.observe(viewLifecycleOwner) { userId ->
+										if (userId != null) {
+											detailPokemonViewModel.catchPokemon(
+												CatchPokemonRequestBody(
+													userId = userId,
+													pokemonId = detailPokemonResult.payload.id
+												)
+											)
+											catchPokemon()
+
+										}
+									}
+
+							}
+
+							// make request body form
+							detailPokemonViewModel.getUserId()
+								.observe(viewLifecycleOwner) { userId ->
+									if (userId != null) {
+										storePokemonRequestBody = StorePokemonRequestBody(
+											userId = userId,
+											pokemonId = detailPokemonResult.payload.id,
+											name = detailPokemonResult.payload.name,
+											nickname = null
+										)
+
+									}
+								}
+
+
 						}
 					} else {
 						setLoading(false)
@@ -179,6 +221,164 @@ class DetailPokemonFragment : Fragment() {
 			}
 		}
 	}
+
+	private fun catchPokemon() {
+
+		// observe the result of our networking
+		detailPokemonViewModel.getCatchPokemonResult.observe(viewLifecycleOwner) { getCatchPokemonResult ->
+
+			when (getCatchPokemonResult) {
+
+				is Resource.Loading -> {
+					// set loading when still loading the data from network
+					setLoadingCatch(true)
+				}
+
+				is Resource.Error -> {
+					// set loading to false (not loading anymore) if the result is error
+					setLoadingCatch(false)
+
+					customSnackbar.showSnackbarWithAction(
+						requireActivity().findViewById(android.R.id.content),
+						getCatchPokemonResult.payload?.status ?: "Error occured!",
+						"OK"
+					) {
+						customSnackbar.dismissSnackbar()
+					}
+				}
+
+				is Resource.Success -> {
+
+					// set loading to false if we got response from the network
+					setLoadingCatch(false)
+
+					if (getCatchPokemonResult.payload?.success == true) {
+						// show dialog to give nickname
+						showDialogNickname(
+							title = "Successful",
+							message = "Pokemon caught! Please give a nickname."
+						) { nickname ->
+							// do store pokemon
+
+							// stored request body
+							val updatedRequestBody =
+								storePokemonRequestBody.copy(nickname = nickname)
+
+							storePokemon(updatedRequestBody)
+						}
+
+					} else {
+						setLoadingCatch(false)
+
+						// show snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							getCatchPokemonResult.payload?.status ?: "Error occured!",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+					}
+				}
+
+				else -> {}
+			}
+		}
+	}
+
+	private fun storePokemon(storePokemonRequestBody: StorePokemonRequestBody) {
+
+		detailPokemonViewModel.storePokemon(storePokemonRequestBody)
+
+		detailPokemonViewModel.getStorePokemonResult.observe(viewLifecycleOwner) { getStorePokemonResult ->
+
+			when (getStorePokemonResult) {
+				is Resource.Loading -> setLoadingCatch(true)
+				is Resource.Error -> {
+					setLoadingCatch(false)
+					Log.d("Result status", getStorePokemonResult.payload?.status.toString())
+
+					customSnackbar.showSnackbarWithAction(
+						requireActivity().findViewById(android.R.id.content),
+						getStorePokemonResult.payload?.status ?: "Error occured!",
+						"OK"
+					) {
+						customSnackbar.dismissSnackbar()
+					}
+				}
+
+				is Resource.Success -> {
+					setLoadingCatch(false)
+					Log.d("Result status", getStorePokemonResult.payload?.status.toString())
+
+					val storePokemonResult = getStorePokemonResult.payload
+
+					if (storePokemonResult?.success == true) {
+
+						// show snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							storePokemonResult.status ?: "Pokémon stored successfully",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+
+
+					} else {
+						// if the success is false, then just show the snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							storePokemonResult?.status ?: "Failed to store Pokémon (Insert failed)",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+					}
+				}
+
+				else -> {}
+
+			}
+		}
+	}
+
+	private fun showDialogNickname(
+		title: String,
+		message: String,
+		positiveAction: (nickname: String) -> Unit,
+	) {
+		if (isAlertDialogShowing) {
+			// Jika alert dialog sedang ditampilkan, keluar dari fungsi
+			return
+		}
+		isAlertDialogShowing = true
+
+		val builder = AlertDialog.Builder(requireContext()).create()
+
+		// Use ViewBinding to inflate the layout
+		val binding = DialogNicknameBinding.inflate(layoutInflater)
+		builder.setView(binding.root)
+		builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+		binding.tvAlertTitle.text = title
+		binding.tvAlertMessage.text = message
+
+		binding.btnAlertYes.setOnClickListener {
+			val nickname = binding.edtNickname.text.toString() // Retrieve the value from EditText
+			positiveAction.invoke(nickname) // Pass the value to the positiveAction callback
+			builder.dismiss()
+			isAlertDialogShowing = false // Setelah menutup dialog, atur kembali flag
+		}
+
+		builder.setOnDismissListener {
+			isAlertDialogShowing = false // Atur kembali flag saat dialog ditutup
+		}
+
+		builder.setCanceledOnTouchOutside(false)
+		builder.show()
+	}
+
 
 	private fun showCustomAlertDialog(
 		title: String,
@@ -224,10 +424,19 @@ class DetailPokemonFragment : Fragment() {
 		builder.show()
 	}
 
+	private fun setLoadingCatch(isLoading: Boolean) {
+		if (isLoading) {
+			binding.pbCatch.visibility = View.VISIBLE
+		} else {
+			binding.pbCatch.visibility = View.GONE
+		}
+	}
+
 	private fun setLoading(isLoading: Boolean) {
 		with(binding) {
 			setShimmerVisibility(shimmerDetailPokemonFragment, isLoading)
-			linearLayoutDetailPokemon.visibility = if (isLoading) View.GONE else View.VISIBLE
+			linearLayoutDetailPokemon.visibility =
+				if (isLoading) View.GONE else View.VISIBLE
 			cvErrorDetailPokemon.visibility = if (isLoading) View.GONE else View.VISIBLE
 		}
 	}

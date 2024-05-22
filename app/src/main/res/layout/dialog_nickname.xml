@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_margin="40dp"
+    android:backgroundTint="@color/white"
+    android:padding="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:strokeColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_alert_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppinssemibold"
+            android:text="@string/alert_title"
+            android:textColor="@color/text_500"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_alert_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/tv_alert_message"
+            android:textAlignment="center"
+            android:textColor="@color/neutral_400"
+            android:textSize="12sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nickname"
+            style="@style/CustomTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:errorTextAppearance="@style/ErrorTextAppearance"
+            app:hintEnabled="false">
+
+            <com.nandaiqbalh.pokemonapp.util.customview.CustomTextInputEditText
+                android:id="@+id/edt_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:fontFamily="@font/poppinsmedium"
+                android:hint="@string/tv_nickname_hint"
+                android:inputType="text"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp"
+                android:textColor="@color/text_500"
+                android:textColorHint="@color/neutral_300"
+                android:textSize="11sp"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_alert_yes"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="@string/btn_save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:cornerRadius="6dp" />
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
