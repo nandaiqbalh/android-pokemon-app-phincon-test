@@ -1,6 +1,5 @@
 package com.nandaiqbalh.pokemonapp.di
 
-import com.nandaiqbalh.pokemonapp.data.remote.service.BackendApiService
 import com.nandaiqbalh.pokemonapp.data.remote.service.PokemonApiService
 import dagger.Module
 import dagger.Provides
@@ -35,26 +34,8 @@ object NetworkModule {
 
 	@Singleton
 	@Provides
-	fun provideApiServicePlaces(retrofit: Retrofit): PokemonApiService =
+	fun provideApiService(retrofit: Retrofit): PokemonApiService =
 		retrofit.create(PokemonApiService::class.java)
 
-	@Singleton
-	@Provides
-	fun provideBackendRetrofit(): Retrofit {
-		val loggingInterceptor = HttpLoggingInterceptor()
-			.setLevel(HttpLoggingInterceptor.Level.BODY)
-		val client = OkHttpClient.Builder()
-			.addInterceptor(loggingInterceptor)
-			.build()
-		return Retrofit.Builder()
-			.baseUrl(baseUrlBackend)
-			.addConverterFactory(GsonConverterFactory.create())
-			.client(client)
-			.build()
-	}
 
-	@Singleton
-	@Provides
-	fun provideBackendServicePlaces(retrofit: Retrofit): BackendApiService =
-		retrofit.create(BackendApiService::class.java)
 }

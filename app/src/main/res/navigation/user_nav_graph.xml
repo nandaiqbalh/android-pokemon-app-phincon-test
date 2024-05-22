@@ -22,6 +22,12 @@
         android:name="com.nandaiqbalh.pokemonapp.presentation.ui.home.detailpokemon.DetailPokemonFragment"
         android:label="fragment_detail_pokemon"
         tools:layout="@layout/fragment_detail_pokemon" >
+
+        <argument
+            android:name="pokemonName"
+            app:argType="string"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_detailPokemonFragment_to_pokemonListFragment"
             app:destination="@id/pokemonListFragment" />

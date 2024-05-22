@@ -184,6 +184,16 @@
 
                             <include layout="@layout/shimmer_item_pokemon" />
 
+                            <include layout="@layout/shimmer_item_pokemon" />
+
+                            <include layout="@layout/shimmer_item_pokemon" />
+
+                            <include layout="@layout/shimmer_item_pokemon" />
+
+                            <include layout="@layout/shimmer_item_pokemon" />
+
+                            <include layout="@layout/shimmer_item_pokemon" />
+
                         </LinearLayout>
 
 

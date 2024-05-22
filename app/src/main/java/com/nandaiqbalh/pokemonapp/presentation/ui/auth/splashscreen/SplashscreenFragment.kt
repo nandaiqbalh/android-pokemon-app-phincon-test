@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.nandaiqbalh.pokemonapp.databinding.FragmentSplashscreenBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +16,6 @@ class SplashscreenFragment : Fragment() {
 
 	private var _binding: FragmentSplashscreenBinding? = null
 	private val binding get() = _binding!!
-	private val splashscreenViewModel: SplashscreenViewModel by viewModels()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -37,19 +35,13 @@ class SplashscreenFragment : Fragment() {
 	}
 
 	private fun doSplashscreen() {
-		splashscreenViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusOnboarding ->
-			Handler().postDelayed({
-				if (statusOnboarding == true) {
-					val intent = Intent(context, MainActivity::class.java)
-					startActivity(intent)
-					requireActivity().finish()
-				} else {
-					val intent = Intent(context, MainActivity::class.java)
-					startActivity(intent)
-					requireActivity().finish()
-				}
-			}, 3000)
-		}
+		Handler().postDelayed({
+
+			val intent = Intent(context, MainActivity::class.java)
+			startActivity(intent)
+			requireActivity().finish()
+
+		}, 3000)
 	}
 
 	override fun onDestroy() {
