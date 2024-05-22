@@ -60,7 +60,7 @@ class MyPokemonListAdapter : RecyclerView.Adapter<MyPokemonListAdapter.pokemonVi
 			}
 
 			binding.tvRelease.setOnClickListener {
-				onItemClickCallBack.onReleaseClicked(pokemon.id)
+				onItemClickCallBack.onReleaseClicked(pokemonId = pokemon.pokemon_id)
 			}
 		}
 

@@ -6,12 +6,16 @@ import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.register.AuthRegis
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.register.AuthRegisterRemoteDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.catchpokemon.CatchPokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.catchpokemon.CatchPokemonDataSourceImpl
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.deletepokemon.DeletePokemonDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.deletepokemon.DeletePokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.mypokemon.MyPokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.mypokemon.MyPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSourceImpl
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.releasepokemon.ReleasePokemonDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.releasepokemon.ReleasePokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.storepokemon.StorePokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.storepokemon.StorePokemonDataSourceImpl
 import dagger.Binds
@@ -44,5 +48,10 @@ abstract class DataSourceModule {
 	@Binds
 	abstract fun provideMyPokemonDataSource(myPokemonDataSourceImpl: MyPokemonDataSourceImpl): MyPokemonDataSource
 
+	@Binds
+	abstract fun provideReleasePokemonDataSource(releasePokemonDataSourceImpl: ReleasePokemonDataSourceImpl): ReleasePokemonDataSource
+
+	@Binds
+	abstract fun provideDeletePokemonDataSource(deletePokemonDataSourceImpl: DeletePokemonDataSourceImpl): DeletePokemonDataSource
 
 }

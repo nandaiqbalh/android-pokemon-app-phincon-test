@@ -6,8 +6,11 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.auth.register.request.AuthRe
 import com.nandaiqbalh.pokemonapp.data.remote.model.auth.register.response.AuthRegisterRemoteResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.catchpokemon.request.CatchPokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.catchpokemon.response.CatchPokemonResponse
+import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.request.DeletePokemonRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.response.DeletePokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.response.MyPokemonResponse
+import com.nandaiqbalh.pokemonapp.data.remote.model.releasepokemon.ReleasePokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.response.StorePokemonResponse
 import retrofit2.http.Body
@@ -39,4 +42,12 @@ interface BackendApiService {
 	suspend fun getMyPokemons(
 		@Body myPokemonRequestBody: MyPokemonRequestBody
 	): MyPokemonResponse
+
+	@POST("pokemon/release-pokemon")
+	suspend fun releasePokemon(): ReleasePokemonResponse
+
+	@POST("pokemon/delete-pokemon")
+	suspend fun deletePokemon(
+		@Body deletePokemonRequestBody: DeletePokemonRequestBody
+	): DeletePokemonResponse
 }

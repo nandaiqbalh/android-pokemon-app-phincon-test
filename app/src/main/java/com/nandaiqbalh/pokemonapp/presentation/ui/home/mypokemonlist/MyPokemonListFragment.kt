@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.nandaiqbalh.pokemonapp.R
+import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.request.DeletePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
 import com.nandaiqbalh.pokemonapp.databinding.FragmentMyPokemonListBinding
-import com.nandaiqbalh.pokemonapp.presentation.ui.home.myMyPokemon.MyPokemonViewModel
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.mypokemonlist.adapter.MyPokemonListAdapter
+import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +32,7 @@ class MyPokemonListFragment : Fragment() {
 	private val binding get() = _binding!!
 
 	private val mypokemonViewModel: MyPokemonViewModel by viewModels()
+	private val customSnackbar = CustomSnackbar()
 
 	private var isAlertDialogShowing = false
 
@@ -63,20 +66,21 @@ class MyPokemonListFragment : Fragment() {
 			findNavController().popBackStack()
 		}
 	}
+
 	@SuppressLint("SetTextI18n")
 	private fun setPokemonRecyclerView() {
 
 		// set initial state to loading
 		setLoading(true)
 
-		mypokemonViewModel.getUserId().observe(viewLifecycleOwner) { userId->
+		mypokemonViewModel.getUserId().observe(viewLifecycleOwner) { userId ->
 			if (userId != null) {
 				// do networking to get pokemon data
 				mypokemonViewModel.getMyPokemon(MyPokemonRequestBody(userId))
 
 			}
 		}
-		
+
 
 		// observe the result of our networking
 		mypokemonViewModel.getMyPokemonResult.observe(viewLifecycleOwner) { myPokemonListResult ->
@@ -103,11 +107,11 @@ class MyPokemonListFragment : Fragment() {
 
 				is Resource.Success -> {
 					setLoading(false)
-					if (myPokemonListResult.payload == null) {
+					if (myPokemonListResult.payload!!.data == null) {
 						setLoading(false)
 						with(binding) {
 							setViewVisibility(cvErrorPokemon, true)
-							tvErrorPokemon.text = "Error occured!"
+							tvErrorPokemon.text = myPokemonListResult.data.status
 							setViewVisibility(cvPokemon, false)
 						}
 					} else {
@@ -124,7 +128,10 @@ class MyPokemonListFragment : Fragment() {
 						// navigate to detail
 						pokemonListAdapter.setOnItemClickCallback(object :
 							MyPokemonListAdapter.OnItemClickCallBack {
-							override fun onItemClicked(pokemonName: String, pokemonNickname: String?) {
+							override fun onItemClicked(
+								pokemonName: String,
+								pokemonNickname: String?,
+							) {
 								val action =
 									MyPokemonListFragmentDirections.actionMyPokemonListFragmentToDetailPokemonFragment(
 										pokemonName, pokemonNickname
@@ -135,7 +142,19 @@ class MyPokemonListFragment : Fragment() {
 							}
 
 							override fun onReleaseClicked(pokemonId: Int) {
-								TODO("Not yet implemented")
+								showCustomAlertDialog(
+									"Confirmation",
+									"Are you sure release this pokemon?",
+									{
+										mypokemonViewModel.releasePokemon()
+
+										releasePokemonResult(pokemonId)
+									},
+									{
+										// Aksi yang akan dijalankan saat tombol "No" ditekan
+
+									}
+								)
 							}
 						})
 
@@ -150,6 +169,130 @@ class MyPokemonListFragment : Fragment() {
 		}
 	}
 
+	private fun releasePokemonResult(pokemonId: Int) {
+		mypokemonViewModel.getReleasePokemonResult.observe(viewLifecycleOwner) { releasePokemonResult ->
+
+			when (releasePokemonResult) {
+				is Resource.Loading -> setLoading(true)
+				is Resource.Error -> {
+					setLoading(false)
+					Log.d("Result status", releasePokemonResult.payload?.status.toString())
+
+					customSnackbar.showSnackbarWithAction(
+						requireActivity().findViewById(android.R.id.content),
+						releasePokemonResult.payload?.status ?: "Error occured!",
+						"OK"
+					) {
+						customSnackbar.dismissSnackbar()
+					}
+				}
+
+				is Resource.Success -> {
+					setLoading(false)
+					Log.d("Result status", releasePokemonResult.payload?.status.toString())
+
+					val releaseResult = releasePokemonResult.payload
+
+					if (isPrime(releaseResult?.data ?: 0)) {
+						// do networking to remove pokemon from database
+						mypokemonViewModel.getUserId().observe(viewLifecycleOwner) { userId ->
+							if (userId != null) {
+								// do networking to get pokemon data
+								mypokemonViewModel.deletePokemon(
+									DeletePokemonRequestBody(
+										userId = userId,
+										pokemonId = pokemonId
+									)
+								)
+
+								deletePokemonResult()
+							}
+						}
+					} else {
+						// if the success is false, then just show the snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							"Release failed! [${releaseResult?.data}]",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+					}
+
+
+				}
+
+				else -> {}
+
+			}
+		}
+	}
+
+	private fun deletePokemonResult() {
+		mypokemonViewModel.getDeletePokemonResult.observe(viewLifecycleOwner) { getDeletePokemonResult ->
+
+			when (getDeletePokemonResult) {
+				is Resource.Loading -> setLoading(true)
+				is Resource.Error -> {
+					setLoading(false)
+					Log.d("Result status", getDeletePokemonResult.payload?.status.toString())
+
+					customSnackbar.showSnackbarWithAction(
+						requireActivity().findViewById(android.R.id.content),
+						getDeletePokemonResult.payload?.status ?: "Error occured!",
+						"OK"
+					) {
+						customSnackbar.dismissSnackbar()
+					}
+				}
+
+				is Resource.Success -> {
+					setLoading(false)
+					Log.d("Result status", getDeletePokemonResult.payload?.status.toString())
+
+					val deletePokemonResult = getDeletePokemonResult.payload
+
+					if (deletePokemonResult?.success == true) {
+
+						// show snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							deletePokemonResult.status,
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+
+
+					} else {
+						// if the success is false, then just show the snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							deletePokemonResult?.status ?: "Authentication failed!",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+					}
+				}
+
+				else -> {}
+
+			}
+		}
+	}
+
+	private fun isPrime(number: Int): Boolean {
+		if (number <= 1) {
+			return false
+		}
+		for (i in 2 until number) {
+			if (number % i == 0) {
+				return false
+			}
+		}
+		return true
+	}
 
 	private fun showCustomAlertDialog(
 		title: String,
@@ -200,6 +343,7 @@ class MyPokemonListFragment : Fragment() {
 			setShimmerVisibility(shimmerCvPokemon, isLoading)
 		}
 	}
+
 
 	private fun setShimmerVisibility(shimmerView: View, isLoading: Boolean) {
 		shimmerView.visibility = if (isLoading) View.VISIBLE else View.GONE
