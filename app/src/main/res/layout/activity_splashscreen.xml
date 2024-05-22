@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    tools:context=".presentation.ui.auth.splashscreen.SplashscreenFragment">
+    tools:context=".presentation.ui.splashscreen.SplashscreenFragment">
 
     <ImageView
         android:id="@+id/iv_logo"

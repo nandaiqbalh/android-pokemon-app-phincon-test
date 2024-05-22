@@ -26,5 +26,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_terjadi_kesalahan">Terjadi kesalahan!</string>
+    <string name="alert_title">Confirmation\n</string>
+    <string name="tv_alert_message">Are you sure?</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_confirm">Confirm</string>
 
 </resources>

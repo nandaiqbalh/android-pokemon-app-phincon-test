@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".presentation.ui.auth.register.RegisterFragment">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardvoew_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/pb_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_edittext"
+                android:orientation="vertical"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppinsbold"
+                    android:text="@string/btn_register"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_300"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="@string/tv_username_title"
+                    android:textColor="@color/text_500"
+                    android:textSize="12sp"
+                    tools:ignore="TextSizeCheck" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_username"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:errorTextAppearance="@style/ErrorTextAppearance"
+                    app:hintEnabled="false">
+
+                    <com.nandaiqbalh.pokemonapp.util.customview.CustomTextInputEditText
+                        android:id="@+id/edt_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:fontFamily="@font/poppinsmedium"
+                        android:hint="@string/tv_username_hint"
+                        android:inputType="text"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp"
+                        android:textColor="@color/text_500"
+                        android:textColorHint="@color/neutral_300"
+                        android:textSize="11sp"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="@string/tv_password_title"
+                    android:textColor="@color/text_500"
+                    android:textSize="12sp"
+                    tools:ignore="TextSizeCheck" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorTextAppearance="@style/ErrorTextAppearance"
+                    app:hintEnabled="false"
+                    app:passwordToggleEnabled="true">
+
+                    <com.nandaiqbalh.pokemonapp.util.customview.CustomPasswordEditText
+                        android:id="@+id/edt_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:autofillHints=""
+                        android:fontFamily="@font/poppinsmedium"
+                        android:hint="@string/tv_password_hint"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:textColor="@color/text_500"
+                        android:textColorHint="@color/neutral_300"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="@string/tv_password_confirmation_title"
+                    android:textColor="@color/text_500"
+                    android:textSize="12sp"
+                    tools:ignore="TextSizeCheck" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password_confirm"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorTextAppearance="@style/ErrorTextAppearance"
+                    app:hintEnabled="false"
+                    app:passwordToggleEnabled="true">
+
+                    <com.nandaiqbalh.pokemonapp.util.customview.CustomPasswordEditText
+                        android:id="@+id/edt_password_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:autofillHints=""
+                        android:fontFamily="@font/poppinsmedium"
+                        android:hint="@string/tv_password_confirmation_hint"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:textColor="@color/text_500"
+                        android:textColorHint="@color/neutral_300"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/primary_300"
+                    android:fontFamily="@font/poppinsbold"
+                    android:padding="12dp"
+                    android:text="@string/btn_register"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linear_alternate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardvoew_auth">
+
+        <TextView
+            android:id="@+id/tv_alternate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/tv_alt_register"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
+        <TextView
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppinsbold"
+            android:text="@string/btn_login"
+            android:textColor="@color/primary_300"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

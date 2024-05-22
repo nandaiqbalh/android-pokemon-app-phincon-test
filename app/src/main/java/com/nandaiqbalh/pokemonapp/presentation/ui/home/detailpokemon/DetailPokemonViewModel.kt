@@ -3,7 +3,9 @@ package com.nandaiqbalh.pokemonapp.presentation.ui.home.detailpokemon
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.nandaiqbalh.pokemonapp.data.local.datastore.auth.AuthDataStoreManager
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemondetail.response.DetailPokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepository
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailPokemonViewModel @Inject constructor(
 	private val repository: DetailPokemonRepository,
+	private val authDataStoreManager: AuthDataStoreManager
 ) : ViewModel() {
 
 	private var _getDetailPokemonResult = MutableLiveData<Resource<DetailPokemonResponse>>()
@@ -47,4 +50,7 @@ class DetailPokemonViewModel @Inject constructor(
 
 		}
 	}
+
+	fun getStatusAuth(): LiveData<Boolean?> = authDataStoreManager.getStatusAuth.asLiveData()
+
 }
