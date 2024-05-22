@@ -1,7 +1,6 @@
 package com.nandaiqbalh.pokemonapp.data.remote.model.auth.login.response
 
 import com.google.gson.annotations.SerializedName
-import com.nandaiqbalh.pokemonapp.data.remote.model.auth.register.response.UserData
 
 data class AuthLoginRemoteResponse(
     @SerializedName("status")
