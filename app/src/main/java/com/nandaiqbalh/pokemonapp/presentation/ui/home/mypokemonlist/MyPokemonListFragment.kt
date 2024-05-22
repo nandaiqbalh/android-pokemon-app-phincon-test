@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.nandaiqbalh.pokemonapp.R
 import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.request.DeletePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
@@ -23,7 +22,7 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.request.Rename
 import com.nandaiqbalh.pokemonapp.databinding.DialogNicknameBinding
 import com.nandaiqbalh.pokemonapp.databinding.FragmentMyPokemonListBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.mypokemonlist.adapter.MyPokemonListAdapter
-import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
+import com.nandaiqbalh.pokemonapp.util.customview.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,7 +72,7 @@ class MyPokemonListFragment : Fragment() {
 	private fun setPokemonRecyclerView() {
 
 		// set initial state to loading
-		setLoading(true)
+		setLoadingList(true)
 
 		mypokemonViewModel.getUserId().observe(viewLifecycleOwner) { userId ->
 			if (userId != null) {
@@ -89,11 +88,11 @@ class MyPokemonListFragment : Fragment() {
 
 			when (myPokemonListResult) {
 				is Resource.Loading -> {
-					setLoading(true)
+					setLoadingList(true)
 				}
 
 				is Resource.Error -> {
-					setLoading(false)
+					setLoadingList(false)
 
 					// Log and show the message
 
@@ -108,9 +107,9 @@ class MyPokemonListFragment : Fragment() {
 				}
 
 				is Resource.Success -> {
-					setLoading(false)
+					setLoadingList(false)
 					if (myPokemonListResult.payload!!.data == null) {
-						setLoading(false)
+						setLoadingList(false)
 						with(binding) {
 							setViewVisibility(cvErrorPokemon, true)
 							tvErrorPokemon.text = myPokemonListResult.data.status
@@ -198,9 +197,9 @@ class MyPokemonListFragment : Fragment() {
 		mypokemonViewModel.getReleasePokemonResult.observe(viewLifecycleOwner) { releasePokemonResult ->
 
 			when (releasePokemonResult) {
-				is Resource.Loading -> setLoading(true)
+				is Resource.Loading -> setLoadingList(true)
 				is Resource.Error -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", releasePokemonResult.payload?.status.toString())
 
 					customSnackbar.showSnackbarWithAction(
@@ -213,7 +212,7 @@ class MyPokemonListFragment : Fragment() {
 				}
 
 				is Resource.Success -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", releasePokemonResult.payload?.status.toString())
 
 					val releaseResult = releasePokemonResult.payload
@@ -257,9 +256,9 @@ class MyPokemonListFragment : Fragment() {
 		mypokemonViewModel.getRenamePokemonResult.observe(viewLifecycleOwner) { getRenamePokemonResult ->
 
 			when (getRenamePokemonResult) {
-				is Resource.Loading -> setLoading(true)
+				is Resource.Loading -> setLoadingList(true)
 				is Resource.Error -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", getRenamePokemonResult.payload?.status.toString())
 
 					customSnackbar.showSnackbarWithAction(
@@ -272,7 +271,7 @@ class MyPokemonListFragment : Fragment() {
 				}
 
 				is Resource.Success -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", getRenamePokemonResult.payload?.status.toString())
 
 					val deletePokemonResult = getRenamePokemonResult.payload
@@ -288,8 +287,8 @@ class MyPokemonListFragment : Fragment() {
 							customSnackbar.dismissSnackbar()
 						}
 
-						findNavController().navigate(R.id.action_myPokemonListFragment_to_pokemonListFragment)
-
+						val action = MyPokemonListFragmentDirections.actionMyPokemonListFragmentToPokemonListFragment()
+						findNavController().navigate(action)
 					} else {
 						// if the success is false, then just show the snackbar
 						customSnackbar.showSnackbarWithAction(
@@ -312,9 +311,9 @@ class MyPokemonListFragment : Fragment() {
 		mypokemonViewModel.getDeletePokemonResult.observe(viewLifecycleOwner) { getDeletePokemonResult ->
 
 			when (getDeletePokemonResult) {
-				is Resource.Loading -> setLoading(true)
+				is Resource.Loading -> setLoadingList(true)
 				is Resource.Error -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", getDeletePokemonResult.payload?.status.toString())
 
 					customSnackbar.showSnackbarWithAction(
@@ -327,7 +326,7 @@ class MyPokemonListFragment : Fragment() {
 				}
 
 				is Resource.Success -> {
-					setLoading(false)
+					setLoadingList(false)
 					Log.d("Result status", getDeletePokemonResult.payload?.status.toString())
 
 					val deletePokemonResult = getDeletePokemonResult.payload
@@ -343,8 +342,8 @@ class MyPokemonListFragment : Fragment() {
 							customSnackbar.dismissSnackbar()
 						}
 
-						findNavController().navigate(R.id.action_myPokemonListFragment_to_pokemonListFragment)
-
+						val action = MyPokemonListFragmentDirections.actionMyPokemonListFragmentToPokemonListFragment()
+						findNavController().navigate(action)
 
 					} else {
 						// if the success is false, then just show the snackbar
@@ -456,21 +455,15 @@ class MyPokemonListFragment : Fragment() {
 		builder.setCanceledOnTouchOutside(false)
 		builder.show()
 	}
-
-	private fun setLoading(isLoading: Boolean) {
-		with(binding) {
-			setShimmerVisibility(shimmerCvPokemon, isLoading)
+	
+	private fun setLoadingList(isLoading: Boolean) {
+		if (isLoading) {
+			binding.pbList.visibility = View.VISIBLE
+		} else {
+			binding.pbList.visibility = View.GONE
 		}
 	}
-
-
-	private fun setShimmerVisibility(shimmerView: View, isLoading: Boolean) {
-		shimmerView.visibility = if (isLoading) View.VISIBLE else View.GONE
-		(shimmerView as? ShimmerFrameLayout)?.run {
-			if (isLoading) startShimmer() else stopShimmer()
-		}
-	}
-
+	
 	private fun setViewVisibility(view: View, isVisible: Boolean) {
 		view.visibility = if (isVisible) View.VISIBLE else View.GONE
 	}

@@ -24,8 +24,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePo
 import com.nandaiqbalh.pokemonapp.databinding.DialogNicknameBinding
 import com.nandaiqbalh.pokemonapp.databinding.FragmentDetailPokemonBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
-import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.util.GlideApp
+import com.nandaiqbalh.pokemonapp.util.customview.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -328,6 +328,9 @@ class DetailPokemonFragment : Fragment() {
 							customSnackbar.dismissSnackbar()
 						}
 
+						val action =
+							DetailPokemonFragmentDirections.actionDetailPokemonFragmentToPokemonListFragment()
+						findNavController().navigate(action)
 
 					} else {
 						// if the success is false, then just show the snackbar

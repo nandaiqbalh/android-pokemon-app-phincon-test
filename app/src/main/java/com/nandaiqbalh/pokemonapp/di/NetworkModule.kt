@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 	private const val baseUrlApi = "https://pokeapi.co/api/v2/"
-	private const val baseUrlBackend = "http://192.168.1.7/backend-pokemon-app-phincon-test/public/api/v1/"
+	private const val baseUrlBackend = "http://192.168.1.5/backend-pokemon-app-phincon-test/public/api/v1/"
 
 	@Qualifier
 	@Retention(AnnotationRetention.BINARY)

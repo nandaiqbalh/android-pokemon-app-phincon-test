@@ -1,6 +1,5 @@
 package com.nandaiqbalh.pokemonapp.presentation.ui.auth.register
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.nandaiqbalh.pokemonapp.R
 import com.nandaiqbalh.pokemonapp.data.remote.model.auth.register.request.AuthRegisterRequestBody
 import com.nandaiqbalh.pokemonapp.databinding.FragmentRegisterBinding
-import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
-import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
+import com.nandaiqbalh.pokemonapp.util.customview.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,8 +34,6 @@ class RegisterFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		cekStatusLogin()
-
 		buttonListener()
 
 	}
@@ -45,24 +41,14 @@ class RegisterFragment : Fragment() {
 	private fun buttonListener() {
 		with(binding) {
 			btnLogin.setOnClickListener {
-				findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+				val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+				findNavController().navigate(action)
 			}
 			
 			btnRegister.setOnClickListener { 
 				if (validateForm()){
 					authRegister()
 				}
-			}
-		}
-	}
-
-	private fun cekStatusLogin() {
-		registerViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
-			if (statusAuth == true) {
-				val intent = Intent(context, AuthActivity::class.java)
-				startActivity(intent)
-				requireActivity().finish()
-
 			}
 		}
 	}
@@ -115,8 +101,8 @@ class RegisterFragment : Fragment() {
 							customSnackbar.dismissSnackbar()
 						}
 
-						findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-
+						val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+						findNavController().navigate(action)
 
 					} else {
 						// if the success is false, then just show the snackbar

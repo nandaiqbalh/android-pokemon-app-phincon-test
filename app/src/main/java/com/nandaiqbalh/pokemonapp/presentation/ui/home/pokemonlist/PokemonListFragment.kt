@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,11 +50,16 @@ class PokemonListFragment : Fragment() {
 		setButtonListener()
 		setPokemonRecyclerView()
 
-		setUsername()
+		setToolbarWithLocalData()
 	}
 
-	private fun setUsername() {
+	private fun setToolbarWithLocalData() {
+		setLoading(true)
+
+		// set username
 		pokemonListViewModel.getUsername().observe(viewLifecycleOwner) { username ->
+			setLoading(false)
+
 			if (username != null && username != "") {
 				binding.tvUsername.text = username
 			}
@@ -65,14 +71,15 @@ class PokemonListFragment : Fragment() {
 	private fun setButtonListener() {
 		pokemonListViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
 
-			if (statusAuth == false){
+			if (statusAuth == false) {
 				binding.icHomeLogout.visibility = View.GONE
 			}
 
 			binding.ivHomeSave.setOnClickListener {
 				if (statusAuth == true) {
-					findNavController().navigate(R.id.action_pokemonListFragment_to_myPokemonListFragment)
-
+					val action =
+						PokemonListFragmentDirections.actionPokemonListFragmentToMyPokemonListFragment()
+					findNavController().navigate(action)
 				} else {
 					// show dialog to ask user
 					showCustomAlertDialog(
@@ -119,7 +126,7 @@ class PokemonListFragment : Fragment() {
 	private fun setPokemonRecyclerView() {
 
 		// set initial state to loading
-		setLoading(true)
+		setLoadingList(true)
 
 		// do networking to get pokemon data
 		pokemonListViewModel.getPokemonList()
@@ -129,11 +136,11 @@ class PokemonListFragment : Fragment() {
 
 			when (pokemonListResult) {
 				is Resource.Loading -> {
-					setLoading(true)
+					setLoadingList(true)
 				}
 
 				is Resource.Error -> {
-					setLoading(false)
+					setLoadingList(false)
 
 					// Log and show the message
 
@@ -148,9 +155,9 @@ class PokemonListFragment : Fragment() {
 				}
 
 				is Resource.Success -> {
-					setLoading(false)
+					setLoadingList(false)
 					if (pokemonListResult.payload == null) {
-						setLoading(false)
+						setLoadingList(false)
 						with(binding) {
 							setViewVisibility(cvErrorPokemon, true)
 							tvErrorPokemon.text = "Error occured!"
@@ -242,7 +249,17 @@ class PokemonListFragment : Fragment() {
 
 	private fun setLoading(isLoading: Boolean) {
 		with(binding) {
-			setShimmerVisibility(shimmerCvPokemon, isLoading)
+			setShimmerVisibility(shimmerBerandaNamauser, isLoading)
+			setShimmerVisibility(shimmerIvHomeSave, isLoading)
+		}
+	}
+
+
+	private fun setLoadingList(isLoading: Boolean) {
+		if (isLoading) {
+			binding.pbList.visibility = View.VISIBLE
+		} else {
+			binding.pbList.visibility = View.GONE
 		}
 	}
 

@@ -12,9 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.nandaiqbalh.pokemonapp.R
 import com.nandaiqbalh.pokemonapp.data.remote.model.auth.login.request.AuthLoginRequestBody
 import com.nandaiqbalh.pokemonapp.databinding.FragmentLoginBinding
-import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.MainActivity
-import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
+import com.nandaiqbalh.pokemonapp.util.customview.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,8 +45,8 @@ class LoginFragment : Fragment() {
 	private fun buttonListener() {
 		with(binding) {
 			btnRegister.setOnClickListener {
-				findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-			}
+				val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+				findNavController().navigate(action)			}
 
 			btnLogin.setOnClickListener {
 				if (validateForm()) {
@@ -61,7 +60,7 @@ class LoginFragment : Fragment() {
 	private fun cekStatusLogin() {
 		loginViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
 			if (statusAuth == true) {
-				val intent = Intent(context, AuthActivity::class.java)
+				val intent = Intent(context, MainActivity::class.java)
 				startActivity(intent)
 				requireActivity().finish()
 
