@@ -67,7 +67,7 @@ class PokemonListFragment : Fragment() {
 		binding.ivHomeSave.setOnClickListener {
 			pokemonListViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
 				if (statusAuth == true) {
-					// do networking to catch pokemon
+					findNavController().navigate(R.id.action_pokemonListFragment_to_myPokemonListFragment)
 
 				} else {
 					// show dialog to ask user
@@ -166,10 +166,10 @@ class PokemonListFragment : Fragment() {
 						// navigate to detail
 						pokemonListAdapter.setOnItemClickCallback(object :
 							PokemonListAdapter.OnItemClickCallBack {
-							override fun onItemClicked(pokemonName: String) {
+							override fun onItemClicked(pokemonName: String, pokemonNikname: String?) {
 								val action =
 									PokemonListFragmentDirections.actionPokemonListFragmentToDetailPokemonFragment(
-										pokemonName
+										pokemonName, null
 									)
 
 								// Menggunakan findNavController() dari fragment saat ini untuk navigasi

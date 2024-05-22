@@ -35,5 +35,7 @@
     <string name="tv_error_password_mismatch">Passwords do not match!</string>
     <string name="tv_nickname_hint">Enter Nickname</string>
     <string name="btn_save">Save</string>
+    <string name="tv_rename">Rename</string>
+    <string name="tv_release">Release</string>
 
 </resources>

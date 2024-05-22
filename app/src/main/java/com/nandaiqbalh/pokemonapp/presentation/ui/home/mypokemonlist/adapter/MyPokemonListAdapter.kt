@@ -1,4 +1,4 @@
-package com.nandaiqbalh.pokemonapp.presentation.ui.home.pokemonlist.adapter
+package com.nandaiqbalh.pokemonapp.presentation.ui.home.mypokemonlist.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.nandaiqbalh.pokemonapp.data.remote.model.pokemonlist.response.Result
-import com.nandaiqbalh.pokemonapp.databinding.ItemPokemonBinding
+import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.response.DataX
+import com.nandaiqbalh.pokemonapp.databinding.ItemMyPokemonBinding
 import com.nandaiqbalh.pokemonapp.util.GlideApp
 
-class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.pokemonViewHolder>() {
+class MyPokemonListAdapter : RecyclerView.Adapter<MyPokemonListAdapter.pokemonViewHolder>() {
 
 	private lateinit var onItemClickCallBack: OnItemClickCallBack
 
@@ -18,17 +18,17 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.pokemonViewHo
 		this.onItemClickCallBack = onItemClickCallBack
 	}
 
-	private val diffCallback = object : DiffUtil.ItemCallback<Result>() {
+	private val diffCallback = object : DiffUtil.ItemCallback<DataX>() {
 		override fun areItemsTheSame(
-			oldItem: Result,
-			newItem: Result,
+			oldItem: DataX,
+			newItem: DataX,
 		): Boolean {
-			return oldItem.url == newItem.url
+			return oldItem.id == newItem.id
 		}
 
 		override fun areContentsTheSame(
-			oldItem: Result,
-			newItem: Result,
+			oldItem: DataX,
+			newItem: DataX,
 		): Boolean {
 			return oldItem.hashCode() == newItem.hashCode()
 		}
@@ -36,18 +36,17 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.pokemonViewHo
 
 	private val differ = AsyncListDiffer(this, diffCallback)
 
-	fun setList(pokemons: List<Result>?) {
+	fun setList(pokemons: List<DataX>?) {
 		differ.submitList(pokemons)
 	}
 
-	inner class pokemonViewHolder(private val binding: ItemPokemonBinding) :
+	inner class pokemonViewHolder(private val binding: ItemMyPokemonBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 		@SuppressLint("SetTextI18n")
-		fun bind(pokemon: Result) {
+		fun bind(pokemon: DataX) {
 			binding.apply {
 
-				tvItemPokemonTitle.text = pokemon.name
-
+				tvItemPokemonTitle.text = "(${pokemon.nickname}) ${pokemon.name}"
 
 				GlideApp.with(itemView.context)
 					.asBitmap()
@@ -57,14 +56,18 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.pokemonViewHo
 			}
 
 			binding.root.setOnClickListener {
-				onItemClickCallBack.onItemClicked(pokemon.name, pokemonNickname = null)
+				onItemClickCallBack.onItemClicked(pokemon.name, pokemon.nickname)
+			}
+
+			binding.tvRelease.setOnClickListener {
+				onItemClickCallBack.onReleaseClicked(pokemon.id)
 			}
 		}
 
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): pokemonViewHolder {
-		val binding = ItemPokemonBinding.inflate(
+		val binding = ItemMyPokemonBinding.inflate(
 			LayoutInflater.from(parent.context),
 			parent,
 			false
@@ -82,5 +85,7 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListAdapter.pokemonViewHo
 
 	interface OnItemClickCallBack {
 		fun onItemClicked(pokemonName: String, pokemonNickname: String?)
+		fun onReleaseClicked(pokemonId: Int)
+
 	}
 }

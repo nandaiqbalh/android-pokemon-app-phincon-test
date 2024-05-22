@@ -8,6 +8,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.repository.catchpokemon.CatchPokem
 import com.nandaiqbalh.pokemonapp.data.remote.repository.catchpokemon.CatchPokemonRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.mypokemon.MyPokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.mypokemon.MyPokemonRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.storepokemon.StorePokemonRepository
@@ -33,5 +35,7 @@ abstract class RepositoryModule {
 	abstract fun bindsCatchPokemonRepository(catchPokemonRepositoryImpl: CatchPokemonRepositoryImpl): CatchPokemonRepository
 	@Binds
 	abstract fun bindsStorePokemonRepository(storePokemonRepositoryImpl: StorePokemonRepositoryImpl): StorePokemonRepository
+	@Binds
+	abstract fun bindsMyPokemonRepository(myPokemonRepositoryImpl: MyPokemonRepositoryImpl): MyPokemonRepository
 
 }

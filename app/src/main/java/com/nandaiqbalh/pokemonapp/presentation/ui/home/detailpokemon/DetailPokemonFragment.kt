@@ -17,15 +17,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.nandaiqbalh.pokemonapp.R
-import com.nandaiqbalh.pokemonapp.data.remote.model.auth.login.request.AuthLoginRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.catchpokemon.request.CatchPokemonRequestBody
-import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemondetail.response.Move
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemondetail.response.Type
+import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.databinding.DialogNicknameBinding
 import com.nandaiqbalh.pokemonapp.databinding.FragmentDetailPokemonBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
-import com.nandaiqbalh.pokemonapp.presentation.ui.home.MainActivity
 import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
 import com.nandaiqbalh.pokemonapp.util.GlideApp
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
@@ -102,6 +100,8 @@ class DetailPokemonFragment : Fragment() {
 
 		// get name from the adapter with NavArgs
 		val pokemonName = DetailPokemonFragmentArgs.fromBundle(requireArguments()).pokemonName
+		val pokemonNickname =
+			DetailPokemonFragmentArgs.fromBundle(requireArguments()).pokemonNickname
 
 
 		// set initial state to loading
@@ -149,7 +149,13 @@ class DetailPokemonFragment : Fragment() {
 								.load(detailPokemonResult.payload.sprites.frontDefault)
 								.into(ivDetailPokemon)
 
-							tvTitlePokemonDetail.text = detailPokemonResult.payload.name
+							if (pokemonNickname != null) {
+								tvTitlePokemonDetail.text =
+									"(${pokemonNickname}) ${detailPokemonResult.payload.name}"
+							} else {
+								tvTitlePokemonDetail.text = detailPokemonResult.payload.name
+							}
+
 							tvBaseExp.text =
 								"Base exp: ${detailPokemonResult.payload.baseExperience}"
 
@@ -318,7 +324,7 @@ class DetailPokemonFragment : Fragment() {
 						// show snackbar
 						customSnackbar.showSnackbarWithAction(
 							requireActivity().findViewById(android.R.id.content),
-							storePokemonResult.status ?: "Pokémon stored successfully",
+							storePokemonResult.status,
 							"OK"
 						) {
 							customSnackbar.dismissSnackbar()

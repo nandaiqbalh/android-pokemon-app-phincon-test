@@ -8,6 +8,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.datasource.catchpokemon.CatchPokem
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.catchpokemon.CatchPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSourceImpl
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.mypokemon.MyPokemonDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.mypokemon.MyPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.storepokemon.StorePokemonDataSource
@@ -38,6 +40,9 @@ abstract class DataSourceModule {
 
 	@Binds
 	abstract fun provideStorePokemonDataSource(storePokemonDataSourceImpl: StorePokemonDataSourceImpl): StorePokemonDataSource
+
+	@Binds
+	abstract fun provideMyPokemonDataSource(myPokemonDataSourceImpl: MyPokemonDataSourceImpl): MyPokemonDataSource
 
 
 }

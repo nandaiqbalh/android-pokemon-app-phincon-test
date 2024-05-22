@@ -27,6 +27,10 @@
             android:name="pokemonName"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="pokemonNickname"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_detailPokemonFragment_to_pokemonListFragment"
@@ -40,5 +44,8 @@
         <action
             android:id="@+id/action_myPokemonListFragment_to_pokemonListFragment"
             app:destination="@id/pokemonListFragment" />
+        <action
+            android:id="@+id/action_myPokemonListFragment_to_detailPokemonFragment"
+            app:destination="@id/detailPokemonFragment" />
     </fragment>
 </navigation>
