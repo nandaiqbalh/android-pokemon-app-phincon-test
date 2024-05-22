@@ -1,5 +1,9 @@
 package com.nandaiqbalh.pokemonapp.di
 
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.login.AuthLoginRemoteDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.login.AuthLoginRemoteDataSourceImpl
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.register.AuthRegisterRemoteDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.auth.register.AuthRegisterRemoteDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSource
@@ -19,6 +23,11 @@ abstract class DataSourceModule {
 	@Binds
 	abstract fun provideDetailPokemonDataSource(detailPokemonDataSourceImpl: DetailPokemonDataSourceImpl): DetailPokemonDataSource
 
+	@Binds
+	abstract fun provideAuthLoginDataSource(authLoginRemoteDataSourceImpl: AuthLoginRemoteDataSourceImpl): AuthLoginRemoteDataSource
+
+	@Binds
+	abstract fun provideAuthRegisterDataSource(authRegisterRemoteDataSourceImpl: AuthRegisterRemoteDataSourceImpl): AuthRegisterRemoteDataSource
 
 
 }

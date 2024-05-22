@@ -30,5 +30,8 @@
     <string name="tv_alert_message">Are you sure?</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
+    <string name="tv_error_input_blank">This field cannot be empty!</string>
+    <string name="tv_error_password_minimum_length">Password must be at least 8 characters long!</string>
+    <string name="tv_error_password_mismatch">Passwords do not match!</string>
 
 </resources>

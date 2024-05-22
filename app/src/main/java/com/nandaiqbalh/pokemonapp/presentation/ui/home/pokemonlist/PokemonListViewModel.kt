@@ -10,6 +10,7 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.pokemonlist.response.Pokemon
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepository
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,5 +53,14 @@ class PokemonListViewModel @Inject constructor(
 	}
 
 	fun getStatusAuth(): LiveData<Boolean?> = authDataStoreManager.getStatusAuth.asLiveData()
+	fun setStatusAuth(statusAuth: Boolean) = CoroutineScope(Dispatchers.IO).launch {
+		authDataStoreManager.setStatusAuth(statusAuth)
+	}
+
+	fun getUsername(): LiveData<String?> = authDataStoreManager.getUsername.asLiveData()
+
+	fun setUsername(username: String) = CoroutineScope(Dispatchers.IO).launch {
+		authDataStoreManager.setUsername(username)
+	}
 
 }

@@ -20,6 +20,7 @@ import com.nandaiqbalh.pokemonapp.R
 import com.nandaiqbalh.pokemonapp.databinding.FragmentPokemonListBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.auth.AuthActivity
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.pokemonlist.adapter.PokemonListAdapter
+import com.nandaiqbalh.pokemonapp.presentation.ui.splashscreen.SplashscreenActivity
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,6 +48,17 @@ class PokemonListFragment : Fragment() {
 		// call the function
 		setButtonListener()
 		setPokemonRecyclerView()
+
+		setUsername()
+	}
+
+	private fun setUsername() {
+		pokemonListViewModel.getUsername().observe(viewLifecycleOwner) { username ->
+			if (username != null && username != "") {
+				binding.tvUsername.text = username
+			}
+		}
+
 	}
 
 	// function to trigger the action when the user doing an action
@@ -76,6 +88,26 @@ class PokemonListFragment : Fragment() {
 				}
 
 			}
+		}
+
+		binding.icHomeLogout.setOnClickListener {
+			showCustomAlertDialog(
+				"Confirmation",
+				"Are you sure to logout?",
+				{
+					pokemonListViewModel.setStatusAuth(false)
+					pokemonListViewModel.setUsername("")
+
+					val intent = Intent(context, SplashscreenActivity::class.java)
+					startActivity(intent)
+					requireActivity().finish()
+
+				},
+				{
+					// Aksi yang akan dijalankan saat tombol "No" ditekan
+
+				}
+			)
 		}
 	}
 

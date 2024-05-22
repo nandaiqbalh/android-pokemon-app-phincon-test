@@ -48,9 +48,9 @@ class CustomPasswordEditText : TextInputEditText {
 					parentLayout?.isErrorEnabled = false
 				} else {
 					parentLayout?.error = if (password.isEmpty()) {
-						"Kolom ini tidak boleh kosong!!"
+						"This field cannot be empty!"
 					} else {
-						"Kata sandi minimal $MIN_PASSWORD_LENGTH karakter!"
+						"Password must be at least 8 characters long!"
 					}
 					setCustomErrorTypeface(parentLayout)
 					parentLayout?.isErrorEnabled = true

@@ -46,7 +46,7 @@ class CustomTextInputEditText : TextInputEditText {
 					parentLayout?.error = null
 					parentLayout?.isErrorEnabled = false
 				} else {
-					parentLayout?.error = "Kolom ini tidak boleh kosong!"
+					parentLayout?.error = "This field cannot be empty!"
 					setCustomErrorTypeface(parentLayout)
 					parentLayout?.isErrorEnabled = true
 				}

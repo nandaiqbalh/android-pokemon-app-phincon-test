@@ -3,6 +3,7 @@ package com.nandaiqbalh.pokemonapp.data.local.datastore.auth
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,6 +28,16 @@ class AuthDataStoreManager(@ApplicationContext private val context: Context) {
 		}
 	}
 
+	val getUserId: Flow<Int?> = context.dataStore.data.map {
+		it[USERID_KEY]
+	}
+
+	suspend fun setUserId(userId: Int) {
+		context.dataStore.edit {
+			it[USERID_KEY] = userId
+		}
+	}
+
 	val getStatusAuth: Flow<Boolean?> = context.dataStore.data.map {
 		it[STATUS_AUTH_KEY]
 	}
@@ -40,6 +51,7 @@ class AuthDataStoreManager(@ApplicationContext private val context: Context) {
 	companion object {
 		private const val DATASTORE_NAME = "authdatastore_preferences"
 
+		private val USERID_KEY = intPreferencesKey("USERID_KEY")
 		private val USERNAME_KEY = stringPreferencesKey("USERNAME_KEY")
 		private val STATUS_AUTH_KEY = booleanPreferencesKey("STATUS_AUTH_KEY")
 
