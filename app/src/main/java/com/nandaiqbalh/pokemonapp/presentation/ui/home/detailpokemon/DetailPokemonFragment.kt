@@ -68,31 +68,6 @@ class DetailPokemonFragment : Fragment() {
 			findNavController().popBackStack()
 		}
 
-		binding.btnCatch.setOnClickListener {
-			detailPokemonViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
-				if (statusAuth == true) {
-					// do networking to catch pokemon
-
-				} else {
-					// show dialog to ask user
-					showCustomAlertDialog(
-						"Confirmation",
-						"You are not logged in. Do you want to login?",
-						{
-							val intent = Intent(context, AuthActivity::class.java)
-							startActivity(intent)
-							requireActivity().finish()
-						},
-						{
-							// Aksi yang akan dijalankan saat tombol "No" ditekan
-
-						}
-					)
-
-				}
-
-			}
-		}
 	}
 
 	@SuppressLint("SetTextI18n")
@@ -175,20 +150,43 @@ class DetailPokemonFragment : Fragment() {
 
 							// catch pokemon
 							binding.btnCatch.setOnClickListener {
-								detailPokemonViewModel.getUserId()
-									.observe(viewLifecycleOwner) { userId ->
-										if (userId != null) {
-											detailPokemonViewModel.catchPokemon(
-												CatchPokemonRequestBody(
-													userId = userId,
-													pokemonId = detailPokemonResult.payload.id
-												)
+								detailPokemonViewModel.getStatusAuth()
+									.observe(viewLifecycleOwner) { statusAuth ->
+										if (statusAuth == true) {
+											// do networking to catch pokemon
+											detailPokemonViewModel.getUserId()
+												.observe(viewLifecycleOwner) { userId ->
+													if (userId != null) {
+														detailPokemonViewModel.catchPokemon(
+															CatchPokemonRequestBody(
+																userId = userId,
+																pokemonId = detailPokemonResult.payload.id
+															)
+														)
+														catchPokemon()
+
+													}
+												}
+										} else {
+											// show dialog to ask user
+											showCustomAlertDialog(
+												"Confirmation",
+												"You are not logged in. Do you want to login?",
+												{
+													val intent =
+														Intent(context, AuthActivity::class.java)
+													startActivity(intent)
+													requireActivity().finish()
+												},
+												{
+													// Aksi yang akan dijalankan saat tombol "No" ditekan
+
+												}
 											)
-											catchPokemon()
 
 										}
-									}
 
+									}
 							}
 
 							// make request body form

@@ -62,6 +62,15 @@ class MyPokemonListAdapter : RecyclerView.Adapter<MyPokemonListAdapter.pokemonVi
 			binding.tvRelease.setOnClickListener {
 				onItemClickCallBack.onReleaseClicked(pokemonId = pokemon.pokemon_id)
 			}
+
+			binding.tvRename.setOnClickListener {
+				onItemClickCallBack.onRenameClicked(
+					userId = pokemon.user_id,
+					pokemonId = pokemon.pokemon_id,
+					nickname = null
+				)
+
+			}
 		}
 
 	}
@@ -86,6 +95,8 @@ class MyPokemonListAdapter : RecyclerView.Adapter<MyPokemonListAdapter.pokemonVi
 	interface OnItemClickCallBack {
 		fun onItemClicked(pokemonName: String, pokemonNickname: String?)
 		fun onReleaseClicked(pokemonId: Int)
+
+		fun onRenameClicked(userId: Int?, pokemonId: Int?, nickname: String?)
 
 	}
 }

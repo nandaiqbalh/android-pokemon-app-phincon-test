@@ -11,9 +11,12 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.response.Delet
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.response.MyPokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.releasepokemon.ReleasePokemonResponse
+import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.request.RenamePokemonRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.response.RenamePokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.repository.deletepokemon.DeletePokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.mypokemon.MyPokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.releasepokemon.ReleasePokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.renamepokemon.RenamePokemonRepository
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,7 @@ class MyPokemonViewModel @Inject constructor(
 	private val repository: MyPokemonRepository,
 	private val releasePokemonRepository: ReleasePokemonRepository,
 	private val deletePokemonRepository: DeletePokemonRepository,
+	private val renamePokemonRepository: RenamePokemonRepository,
 	private val authDataStoreManager: AuthDataStoreManager
 ) : ViewModel() {
 
@@ -122,6 +126,36 @@ class MyPokemonViewModel @Inject constructor(
 		}
 	}
 
+	private var _getRenamePokemonResult = MutableLiveData<Resource<RenamePokemonResponse>>()
+	val getRenamePokemonResult: LiveData<Resource<RenamePokemonResponse>> get() = _getRenamePokemonResult
+
+	fun renamePokemon(renamePokemonRequestBody: RenamePokemonRequestBody) {
+
+		viewModelScope.launch(Dispatchers.IO) {
+			_getRenamePokemonResult.postValue(Resource.Loading())
+
+			try {
+				val data =
+					renamePokemonRepository.renamePokemon(renamePokemonRequestBody)
+
+				if (data.payload != null) {
+
+					viewModelScope.launch(Dispatchers.Main) {
+						_getRenamePokemonResult.postValue(Resource.Success(data.payload))
+					}
+
+				} else {
+					_getRenamePokemonResult.postValue(Resource.Error(data.exception, null))
+				}
+
+			} catch (e: Exception) {
+				viewModelScope.launch(Dispatchers.Main) {
+					_getRenamePokemonResult.postValue(Resource.Error(e, null))
+				}
+			}
+
+		}
+	}
 	fun getUserId(): LiveData<Int?> = authDataStoreManager.getUserId.asLiveData()
 
 }

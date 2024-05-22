@@ -16,6 +16,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonList
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.releasepokemon.ReleasePokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.releasepokemon.ReleasePokemonDataSourceImpl
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.renamepokemon.RenamePokemonDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.renamepokemon.RenamePokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.storepokemon.StorePokemonDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.storepokemon.StorePokemonDataSourceImpl
 import dagger.Binds
@@ -53,5 +55,8 @@ abstract class DataSourceModule {
 
 	@Binds
 	abstract fun provideDeletePokemonDataSource(deletePokemonDataSourceImpl: DeletePokemonDataSourceImpl): DeletePokemonDataSource
+
+	@Binds
+	abstract fun provideRenamePokemonDataSource(renamePokemonDataSourceImpl: RenamePokemonDataSourceImpl): RenamePokemonDataSource
 
 }

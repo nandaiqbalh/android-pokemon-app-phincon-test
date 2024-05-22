@@ -19,6 +19,8 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.nandaiqbalh.pokemonapp.R
 import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.request.DeletePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.request.RenamePokemonRequestBody
+import com.nandaiqbalh.pokemonapp.databinding.DialogNicknameBinding
 import com.nandaiqbalh.pokemonapp.databinding.FragmentMyPokemonListBinding
 import com.nandaiqbalh.pokemonapp.presentation.ui.home.mypokemonlist.adapter.MyPokemonListAdapter
 import com.nandaiqbalh.pokemonapp.util.CustomSnackbar
@@ -156,6 +158,29 @@ class MyPokemonListFragment : Fragment() {
 									}
 								)
 							}
+
+							override fun onRenameClicked(
+								userId: Int?,
+								pokemonId: Int?,
+								nickname: String?,
+							) {
+								showDialogNickname(
+									title = "Rename",
+									message = "Enter new nickname for this pokemon."
+								) { enteredNickname ->
+									// do store pokemon
+
+									// stored request body
+									mypokemonViewModel.renamePokemon(
+										RenamePokemonRequestBody(
+											userId,
+											pokemonId,
+											enteredNickname
+										)
+									)
+									renamePokemonResult()
+								}
+							}
 						})
 
 					}
@@ -228,6 +253,61 @@ class MyPokemonListFragment : Fragment() {
 		}
 	}
 
+	private fun renamePokemonResult() {
+		mypokemonViewModel.getRenamePokemonResult.observe(viewLifecycleOwner) { getRenamePokemonResult ->
+
+			when (getRenamePokemonResult) {
+				is Resource.Loading -> setLoading(true)
+				is Resource.Error -> {
+					setLoading(false)
+					Log.d("Result status", getRenamePokemonResult.payload?.status.toString())
+
+					customSnackbar.showSnackbarWithAction(
+						requireActivity().findViewById(android.R.id.content),
+						getRenamePokemonResult.payload?.status ?: "Error occured!",
+						"OK"
+					) {
+						customSnackbar.dismissSnackbar()
+					}
+				}
+
+				is Resource.Success -> {
+					setLoading(false)
+					Log.d("Result status", getRenamePokemonResult.payload?.status.toString())
+
+					val deletePokemonResult = getRenamePokemonResult.payload
+
+					if (deletePokemonResult?.success == true) {
+
+						// show snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							deletePokemonResult.status,
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+
+						findNavController().navigate(R.id.action_myPokemonListFragment_to_pokemonListFragment)
+
+					} else {
+						// if the success is false, then just show the snackbar
+						customSnackbar.showSnackbarWithAction(
+							requireActivity().findViewById(android.R.id.content),
+							deletePokemonResult?.status ?: "Authentication failed!",
+							"OK"
+						) {
+							customSnackbar.dismissSnackbar()
+						}
+					}
+				}
+
+				else -> {}
+
+			}
+		}
+	}
+
 	private fun deletePokemonResult() {
 		mypokemonViewModel.getDeletePokemonResult.observe(viewLifecycleOwner) { getDeletePokemonResult ->
 
@@ -263,6 +343,8 @@ class MyPokemonListFragment : Fragment() {
 							customSnackbar.dismissSnackbar()
 						}
 
+						findNavController().navigate(R.id.action_myPokemonListFragment_to_pokemonListFragment)
+
 
 					} else {
 						// if the success is false, then just show the snackbar
@@ -293,6 +375,43 @@ class MyPokemonListFragment : Fragment() {
 		}
 		return true
 	}
+
+	private fun showDialogNickname(
+		title: String,
+		message: String,
+		positiveAction: (nickname: String) -> Unit,
+	) {
+		if (isAlertDialogShowing) {
+			// Jika alert dialog sedang ditampilkan, keluar dari fungsi
+			return
+		}
+		isAlertDialogShowing = true
+
+		val builder = AlertDialog.Builder(requireContext()).create()
+
+		// Use ViewBinding to inflate the layout
+		val binding = DialogNicknameBinding.inflate(layoutInflater)
+		builder.setView(binding.root)
+		builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+		binding.tvAlertTitle.text = title
+		binding.tvAlertMessage.text = message
+
+		binding.btnAlertYes.setOnClickListener {
+			val nickname = binding.edtNickname.text.toString() // Retrieve the value from EditText
+			positiveAction.invoke(nickname) // Pass the value to the positiveAction callback
+			builder.dismiss()
+			isAlertDialogShowing = false // Setelah menutup dialog, atur kembali flag
+		}
+
+		builder.setOnDismissListener {
+			isAlertDialogShowing = false // Atur kembali flag saat dialog ditutup
+		}
+
+		builder.setCanceledOnTouchOutside(false)
+		builder.show()
+	}
+
 
 	private fun showCustomAlertDialog(
 		title: String,

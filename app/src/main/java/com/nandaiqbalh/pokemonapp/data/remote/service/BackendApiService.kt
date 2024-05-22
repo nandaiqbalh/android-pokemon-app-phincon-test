@@ -11,6 +11,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.model.deletepokemon.response.Delet
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.request.MyPokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.mypokemon.response.MyPokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.releasepokemon.ReleasePokemonResponse
+import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.request.RenamePokemonRequestBody
+import com.nandaiqbalh.pokemonapp.data.remote.model.renamepokemon.response.RenamePokemonResponse
 import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.request.StorePokemonRequestBody
 import com.nandaiqbalh.pokemonapp.data.remote.model.storepokemon.response.StorePokemonResponse
 import retrofit2.http.Body
@@ -50,4 +52,9 @@ interface BackendApiService {
 	suspend fun deletePokemon(
 		@Body deletePokemonRequestBody: DeletePokemonRequestBody
 	): DeletePokemonResponse
+
+	@POST("pokemon/rename-pokemon")
+	suspend fun renamePokemon(
+		@Body renamePokemonRequestBody: RenamePokemonRequestBody
+	): RenamePokemonResponse
 }

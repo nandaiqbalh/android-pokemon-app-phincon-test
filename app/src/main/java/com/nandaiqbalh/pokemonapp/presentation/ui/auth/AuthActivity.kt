@@ -1,23 +1,39 @@
 package com.nandaiqbalh.pokemonapp.presentation.ui.auth
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.nandaiqbalh.pokemonapp.R
+import com.nandaiqbalh.pokemonapp.databinding.ActivityAuthBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
+	private lateinit var navController: NavController
+	private var _binding: ActivityAuthBinding? = null
+	private val binding get() = _binding!!
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		enableEdgeToEdge()
-		setContentView(R.layout.activity_auth)
-		ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-			val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-			v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-			insets
-		}
+		_binding = ActivityAuthBinding.inflate(layoutInflater)
+		setContentView(binding.root)
+
+		supportActionBar?.hide()
+
+		val navHostFragment = supportFragmentManager
+			.findFragmentById(R.id.fragmentContainerViewAuth) as NavHostFragment
+
+		navController = navHostFragment.navController
+
+	}
+
+	override fun onSupportNavigateUp(): Boolean {
+		return navController.navigateUp() || super.onSupportNavigateUp()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		_binding = null
 	}
 }

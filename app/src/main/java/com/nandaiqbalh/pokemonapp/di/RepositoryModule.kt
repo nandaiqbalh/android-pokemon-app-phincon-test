@@ -16,6 +16,8 @@ import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonList
 import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.releasepokemon.ReleasePokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.releasepokemon.ReleasePokemonRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.renamepokemon.RenamePokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.renamepokemon.RenamePokemonRepositoryImpl
 import com.nandaiqbalh.pokemonapp.data.remote.repository.storepokemon.StorePokemonRepository
 import com.nandaiqbalh.pokemonapp.data.remote.repository.storepokemon.StorePokemonRepositoryImpl
 import dagger.Binds
@@ -45,5 +47,7 @@ abstract class RepositoryModule {
 	abstract fun bindsReleasePokemonRepository(releasePokemonRepositoryImpl: ReleasePokemonRepositoryImpl): ReleasePokemonRepository
 	@Binds
 	abstract fun bindsDeletePokemonRepository(deletePokemonRepositoryImpl: DeletePokemonRepositoryImpl): DeletePokemonRepository
+	@Binds
+	abstract fun bindsRenamePokemonRepository(renamePokemonRepositoryImpl: RenamePokemonRepositoryImpl): RenamePokemonRepository
 
 }

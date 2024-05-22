@@ -63,9 +63,13 @@ class PokemonListFragment : Fragment() {
 
 	// function to trigger the action when the user doing an action
 	private fun setButtonListener() {
+		pokemonListViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
 
-		binding.ivHomeSave.setOnClickListener {
-			pokemonListViewModel.getStatusAuth().observe(viewLifecycleOwner) { statusAuth ->
+			if (statusAuth == false){
+				binding.icHomeLogout.visibility = View.GONE
+			}
+
+			binding.ivHomeSave.setOnClickListener {
 				if (statusAuth == true) {
 					findNavController().navigate(R.id.action_pokemonListFragment_to_myPokemonListFragment)
 
@@ -166,7 +170,10 @@ class PokemonListFragment : Fragment() {
 						// navigate to detail
 						pokemonListAdapter.setOnItemClickCallback(object :
 							PokemonListAdapter.OnItemClickCallBack {
-							override fun onItemClicked(pokemonName: String, pokemonNikname: String?) {
+							override fun onItemClicked(
+								pokemonName: String,
+								pokemonNikname: String?,
+							) {
 								val action =
 									PokemonListFragmentDirections.actionPokemonListFragmentToDetailPokemonFragment(
 										pokemonName, null
