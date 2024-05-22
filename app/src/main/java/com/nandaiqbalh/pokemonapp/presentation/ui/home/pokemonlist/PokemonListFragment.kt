@@ -35,7 +35,7 @@ class PokemonListFragment : Fragment() {
 
 		// call the function
 		setButtonListener()
-		setPengumumanRecyclerView()
+		setPokemonRecyclerView()
 	}
 
 	// function to trigger the action when the user doing an action
@@ -44,12 +44,12 @@ class PokemonListFragment : Fragment() {
 	}
 
 	@SuppressLint("SetTextI18n")
-	private fun setPengumumanRecyclerView() {
+	private fun setPokemonRecyclerView() {
 
 		// set initial state to loading
 		setLoading(true)
 
-		// do networking to get broadcast data
+		// do networking to get pokemon data
 		pokemonListViewModel.getPokemonList()
 
 		// observe the result of our networking

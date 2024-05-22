@@ -1,5 +1,7 @@
 package com.nandaiqbalh.pokemonapp.di
 
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSource
+import com.nandaiqbalh.pokemonapp.data.remote.datasource.detailpokemon.DetailPokemonDataSourceImpl
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSourceImpl
 import dagger.Binds
@@ -13,6 +15,10 @@ abstract class DataSourceModule {
 
 	@Binds
 	abstract fun providePokemonListDataSource(pokemonListDataSourceImpl: PokemonListDataSourceImpl): PokemonListDataSource
+
+	@Binds
+	abstract fun provideDetailPokemonDataSource(detailPokemonDataSourceImpl: DetailPokemonDataSourceImpl): DetailPokemonDataSource
+
 
 
 }

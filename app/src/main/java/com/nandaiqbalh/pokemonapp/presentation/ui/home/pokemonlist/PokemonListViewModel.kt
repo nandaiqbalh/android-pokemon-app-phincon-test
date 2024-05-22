@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemonlist.response.PokemonListResponse
-import com.nandaiqbalh.pokemonapp.data.remote.repository.PokemonListRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepository
 import com.nandaiqbalh.pokemonapp.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

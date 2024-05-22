@@ -1,7 +1,9 @@
 package com.nandaiqbalh.pokemonapp.di
 
-import com.nandaiqbalh.pokemonapp.data.remote.repository.PokemonListRepository
-import com.nandaiqbalh.pokemonapp.data.remote.repository.PokemonListRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.detailpokemon.DetailPokemonRepositoryImpl
+import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepository
+import com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist.PokemonListRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +15,8 @@ abstract class RepositoryModule {
 
 	@Binds
 	abstract fun bindsPokemonListRepository(pokemonListRepositoryImpl: PokemonListRepositoryImpl): PokemonListRepository
+	@Binds
+	abstract fun bindsDetailPokemonRepository(detailPokemonRepositoryImpl: DetailPokemonRepositoryImpl): DetailPokemonRepository
+
 
 }

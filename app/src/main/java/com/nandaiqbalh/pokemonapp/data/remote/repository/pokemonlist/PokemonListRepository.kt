@@ -1,4 +1,4 @@
-package com.nandaiqbalh.pokemonapp.data.remote.repository
+package com.nandaiqbalh.pokemonapp.data.remote.repository.pokemonlist
 
 import com.nandaiqbalh.pokemonapp.data.remote.datasource.pokemonlist.PokemonListDataSource
 import com.nandaiqbalh.pokemonapp.data.remote.model.pokemonlist.response.PokemonListResponse

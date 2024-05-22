@@ -2,7 +2,7 @@
     <string name="app_name">PokemonApp</string>
 
     <string name="tv_hello">Hello! 👋</string>
-    <string name="tv_username">nandaiqbalh</string>
+    <string name="tv_username">Welcome!</string>
     <string name="tv_pokemon_detail">Pokemon Detail</string>
     <string name="tv_pokemon_name">Pokemon Name</string>
     <string name="tv_moves">Moves</string>
